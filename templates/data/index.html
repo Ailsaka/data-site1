@@ -1,0 +1,69 @@
+
+	<!-- 支持库和css
+	–––––––––––––––––––––––––––––––––––––––––––––––––– -->
+{%extends 'base.html'%}
+{%block title%} 数据默认页 {%endblock%}
+
+{%block body%}
+
+	<!-- 导航栏
+	–––––––––––––––––––––––––––––––––––––––––––––––––– -->
+{%include 'data/top.html' %}
+
+
+
+	<!-- 页面内容
+	–––––––––––––––––––––––––––––––––––––––––––––––––– -->
+<div class="container-fluid">
+
+{% if data is not None%}
+<div class="row ">
+    <div class="col"><!--展示数据-->
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                <th><input type="checkbox"></th>
+                {% for k in tb_cols%}
+                <th>{{k}}</th>
+                {%endfor%}
+                </tr>
+            </thead>
+            <tbody>
+                {%for d in data%}
+                <tr>
+                    <th><input type="checkbox"></th>
+                    {%for di in d.values%}
+                    <td>{{di}}</td>
+                    {%endfor%}
+                </tr>
+                {%endfor%}
+            </tbody>
+        </table>
+    </div>
+</div>
+{%endif%}
+
+{% if file is not None%}
+<!--<div class="row bg-dark text-white"></div>-->
+    <div class="row">
+        <div class="col">
+        <div class="row">
+            <form enctype="multipart/form-data" method="post" action="{% url 'data:upload'%}">
+                <input type="file" name="file_up">
+                <button onclick="submit" value="upload" class="btn-primary">点击上传文件</button>
+            </form></div>
+        {% if msg is not None%}
+        <div class="row"><p>{{msg}}</p></div>
+        {%endif%}
+        </div>
+        <div class="col">
+        </div>
+    </div>
+{%endif%}
+
+</div>
+
+
+
+
+{%endblock%}

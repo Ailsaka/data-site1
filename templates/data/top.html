@@ -1,0 +1,87 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col bg-dark text-white">
+            <div class="col bg-dark">&nbsp;
+            </div>
+            <div class="col bg-dark">
+                <a class="navbar-link text-white" href="{%url 'data:index' user%}">
+                    <h5>数据总览</h5></a>
+            </div>
+        </div>
+        <div class="col bg-dark text-white">
+            <div class="col bg-dark">&nbsp;
+            </div>
+            <div class="col bg-dark">
+                <a class="navbar-link text-white" href="{%url 'data:upload' %}">
+                    <h5>数据上传</h5></a>
+            </div>
+        </div>
+        <div class="col bg-dark text-white">
+            <div class="col bg-dark">&nbsp;
+            </div>
+            <div class="col bg-dark">
+                <a class="navbar-link text-white" href="{%url 'data:detail' %}">
+                    <h5>数据详情</h5></a>
+            </div>
+        </div>
+        <div class="col bg-dark text-white">
+            <div class="col bg-dark">&nbsp;
+            </div>
+            <div class="col bg-dark">
+                <a class="navbar-link text-white" href="{%url 'data:cal' %}">
+                    <h5>数据统计</h5></a>
+            </div>
+        </div>
+        <div class="col bg-dark text-white">
+            <div class="col bg-dark">&nbsp;
+            </div>
+            <div class="col bg-dark">
+                <a class="navbar-link text-white" href="{%url 'data:pic' %}">
+                    <h5>趋势变化</h5>
+                </a>
+            </div>
+        </div>
+        <div class="col bg-dark text-white">
+            <div class="col bg-dark">&nbsp;
+            </div>
+            <div class="col bg-dark">
+                <form class="form-inline">
+                    <input class="inline" placeholder="输入">
+                    <button class="btn btn-success text-white inline"  type="button">查找</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+<!--    深蓝色标题栏<-提示信息<-db.py-->
+<!--    <div class="row " style="background-color:#184a73;">&nbsp;</div>-->
+<!--    <div class="row text-white" style="background-color:#184a73;">-->
+<!--        <div class="col">&lt;!&ndash;db基础信息font-style: italic;&ndash;&gt;-->
+<!--            <div class="row">-->
+<!--                {% if db_info is not None %}-->
+<!--                {% for k,v in db_info.items %}-->
+<!--                <div class="col "><h5>{{k}}</h5></div>-->
+<!--                <div class="col " style="">{{v}} </div>-->
+<!--                {% endfor %}-->
+<!--                {% endif %}-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--    <div class="row " style="background-color:#184a73;">&nbsp;</div>-->
+
+
+<!--    &lt;!&ndash;tb基础信息outline:#bdd7e2 solid thin;&ndash;&gt;-->
+<!--    <div class="row " style="background-color:#bdd7e2;">&nbsp;</div>-->
+<!--    <div class="row" style="background-color:#bdd7e2;">-->
+<!--    &lt;!&ndash;   所有的表名 点选跳转表 &ndash;&gt;-->
+<!--        {% if tb_info is not None %}-->
+<!--        {% for t_name in tb_info%}-->
+<!--        <div class="col">-->
+<!--            <a class="text-white " id="{{t_name}}" href="{% url 'data:index' t_name %}">{{t_name}}</a>-->
+<!--        </div>-->
+<!--        {%endfor%}-->
+<!--        {% endif %}-->
+<!--    </div>-->
+    <div class="row " style="background-color:#bdd7e2;">&nbsp;</div>
+</div>
+

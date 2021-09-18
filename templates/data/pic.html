@@ -1,0 +1,58 @@
+{%extends 'base.html'%}
+{%block title%} 数据分析页 {%endblock%}
+
+{%block body%}
+{%include 'data/top.html'%}
+
+<div class="row ">
+    <!--筛选条件-->
+    <div class="col">
+    <!--准备一个DOM-->
+    <div id="main" style="width:600px; height:400px;">
+    <script>
+        myFunction = function(){
+        document.getElementById('demo').innerHTML='测试效果';
+        }
+
+
+        <!--初始化图表        -->
+        var myChart = echarts.init(document.getElementById('main'));
+        var option = {
+            title: {text: 'xx统计图',},
+            tooltip: {},
+            legend: {data:['销量', '价格']},
+            xAxis: {data: ['2017', '2018', '2019', '2020', '2021']},
+            yAxis: {},
+            series: [{
+                name: '销量',
+                type: 'bar',
+                data: [5,20,30]
+                },{
+                name: '价格',
+                type: 'bar',
+                data: [30,90,65]
+                }]
+            };
+
+        <!--不合并之前画过的数据        -->
+        myChart.setOption(option, true);
+    </script>
+    </div>
+        <div id="main1">123</div>
+        <div id="main2">123</div>
+        <div id="main3">123</div>
+    </div>
+
+
+
+    <div class="col">侧边栏备用</div>
+</div>
+
+
+<script >
+    $(document).ready( function(){
+
+    });
+</script>
+
+{%endblock%}

@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>根节点</title>
+
+    {%load static%}
+<!--bootstrap css    -->
+<!--     <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css'%}" />-->
+<!--jquery依赖-->
+    <script  src="{% static 'bootstrap/js/jquery-3.5.1.min.js'%}" ></script>
+<!--bootstrap的js插件-->
+    <script src="{% static 'bootstrap/popper/popper.js'%}" type="module"></script>
+    <script src="{% static 'bootstrap/js/bootstrap.min.js'%}" ></script>
+    <script src="{% static 'bootstrap/js/bootstrap.bundle.min.js'%}" ></script>
+<!--    echarts引入-->
+    <script src="{% static 'echarts/echarts.min.js'%}"></script>
+
+<!--    引入弹窗插件-->
+    <link rel="stylesheet" href="{% static 'hsycms/hsycmsAlert.css'%}">
+    <script src="{% static 'hsycms/hsycmsAlert.js'%}"></script>
+
+<!--    2021 x-admin-->
+    <link rel="stylesheet" href="{% static 'x-admin/css/font.css'%}">
+    <link rel="stylesheet" href="{% static 'x-admin/css/xadmin.css'%}">
+    <link rel="stylesheet" href="{% static 'x-admin/css/theme5.css'%}">
+    <link rel="stylesheet" type="text/css" href="{% static 'x-admin/css/theme1309.min.css'%}">
+    <script src="{% static 'x-admin/lib/layui/layui.js'%}" charset="utf-8"></script>
+    <script type="text/javascript" src="{% static 'x-admin/js/xadmin.js'%}"></script>
+
+    <style type="text/css">
+        a{
+            background-color:rgba(0,0,0,0);
+            border:none;
+            color:#fff;
+            text-decoration:none;
+        }
+    </style>
+
+</head>
+<body>
+
+        <div class="container">
+            <div class="logo">
+                <a href="./index.html"> </a></div>
+            <div class="left_open">
+                <a><i title="展开左侧栏" class="iconfont">&#xe699;</i></a>
+            </div>
+            <!-- <ul class="layui-nav left fast-add" lay-filter="">
+                <li class="layui-nav-item">
+                    <a href="javascript:;">+新增</a>
+                    <dl class="layui-nav-child">
+                        <dd>
+                            <a onclick="xadmin.open('最大化','http://www.baidu.com','','',true)">
+                                <i class="iconfont">&#xe6a2;</i>弹出最大化</a></dd>
+                        <dd>
+                            <a onclick="xadmin.open('弹出自动宽高','http://www.baidu.com')">
+                                <i class="iconfont">&#xe6a8;</i>弹出自动宽高</a></dd>
+                        <dd>
+                            <a onclick="xadmin.open('弹出指定宽高','http://www.baidu.com',500,300)">
+                                <i class="iconfont">&#xe6a8;</i>弹出指定宽高</a></dd>
+                        <dd>
+                            <a onclick="xadmin.add_tab('在tab打开','table-list.html')">
+                                <i class="iconfont">&#xe6b8;</i>在tab打开</a></dd>
+                        <dd>
+                            <a onclick="xadmin.add_tab('在tab打开刷新','table-del.html',true)">
+                                <i class="iconfont">&#xe6b8;</i>在tab打开刷新</a></dd>
+                    </dl>
+                </li>
+            </ul> -->
+            <ul class="layui-nav right" lay-filter="">
+                <li class="layui-nav-item">
+                    <a href="javascript:;">admin</a>
+                    <dl class="layui-nav-child">
+                        <!-- 二级菜单 -->
+                        <dd>
+                            <a onclick="xadmin.open('个人信息','http://www.baidu.com')">个人信息</a></dd>
+                        <dd>
+                            <a onclick="xadmin.open('切换帐号','http://www.baidu.com')">切换帐号</a></dd>
+                        <dd>
+                            <a href="./login.html">退出</a></dd>
+                    </dl>
+                </li>
+                <li class="layui-nav-item to-index">
+                    <a href="/">首页</a></li>
+            </ul>
+        </div>
+<h1>点击下方跳转</h1>
+<div >
+    <a class="btn btn-primary" href="{%url 'guang:login'%}">分入口-login</a>
+    <a href="{%url 'guang:backend'%}" class="btn btn-primary">分入口-backend</a>
+    <a href="{%url 'guang:charts'%}" class="btn btn-primary">分入口-chart</a>
+</div>
+
+
+
+
+    {% if form.errors %}
+        <p style="color: red;">
+            Please correct the error{{ form.errors|pluralize }} below.
+        </p>
+    {% endif %}
+
+    <form action="{% url 'guang:test_django_excel_upload' %}" enctype="multipart/form-data"  method="post">
+        <table>
+            {{ form.as_table }}
+        </table>
+        {% csrf_token %}
+        <input type="file" name="file">
+        <input type="submit" value="Submit">
+    </form>
+
+
+
+{% if tables is not None%}
+    <div>
+        <table class="table">
+            <caption></caption>
+            <thead>
+                <tr>
+                    <th>已发布表单</th>
+                    <th>
+                        <button onclick="confirm()" class="btn btn-primary">添加</button>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for tname, tcols in tables.items%}
+                <tr>
+                    <td>{{tname}}</td>
+                    {% for ti in tcols%}
+                    <td>{{ti}}</td>
+                    {% endfor %}
+                    <td>
+                        <button type="button" class="btn btn-primary">
+                            <a href="{% url 'guang:tables' tname 'edit'%}">修改</a></button>
+                        <button type="button" class="btn btn-primary">
+                            <a href="{% url 'guang:tables' tname 'ok'%}">发布</a></button>
+                        <button type="button" class="btn btn-primary">
+                            <a href="{% url 'guang:tables' tname 'stop'%}">终止</a></button>
+                        <button type="button" class="btn btn-danger">
+                            <a href="{% url 'guang:tables' tname 'del'%}">删除</a></button>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endif %}
+
+
+<!--弹窗-->
+<!--  <div class="hsycms-model-mask" id="mask-confirm"></div>
+ <div class="hsycms-model hsycms-model-confirm" id="confirm">
+   <div class="hscysm-model-title">添加新表</div>
+   <div class="hsycms-model-btn">
+       <form enctype="multipart/form-data" method="post" action=" url 'guang:tables_opr' 'add' 'add'">
+           {% csrf_token %}
+           <div class="hsycms-model-text">
+           <input type="text" placeholder="表名称" name="new_tname" style="width:400px;"><br>
+           <textarea placeholder="列名（以中文逗号分隔）" name="new_cols" style="width:400px;height:300px;"></textarea></div>
+           <button type="button" class="cancel">取消</button>
+           <button onclick="submit" value="" class="ok">确定</button>
+       </form>
+   </div>
+ </div> -->
+
+
+<script >
+       function confirm(){
+      hsycms.confirm('confirm','',
+         function(res){
+           hsycms.success('success','点击了确定');
+         },
+        function(res){
+            hsycms.error('error','点击了取消');
+         },
+      )
+   }
+</script>
+
+</body>
+</html>

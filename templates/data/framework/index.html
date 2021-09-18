@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>数据可视化平台（秘密★10年）</title>
+    {%load static%}
+  <link rel="stylesheet" href="{% static 'framework/css/index.css'%}" />
+
+
+<!--    用于剥离js和模板-->
+    <script>
+        console.log("柱形图1_____________________________________");
+        //var barDataAllSeries = new Array();
+        //var dataAll = new Array();
+        //{% for year, monthValues in counts_dict_all_series.items%}
+        //    //barDataAllSeries.push({{m_values|safe}});
+        //    dataAll.push(
+        //        { year: {{year|safe}}, data: {{monthValues|safe}} }
+        //    );
+        //    console.log("======");
+        //    console.log({{year|safe}} + {{monthValues|safe}});
+        //{%endfor%}
+        //排序
+        //function sortYears(a,b){
+        //    return a.year-b.year;
+        //}
+        //dataAll.sort(sortYears);
+        //
+        //var barDataAllSeriesForR = {{counts_dict_all_series_for_ymr|safe}};
+        //console.log(barDataAllSeriesForR);
+        //console.log(barDataAllSeriesForR['2020']['武器故障']);
+
+        var barDataAllSeriesForMR = {{counts_dict_all_series_for_mr|safe}};
+        var missiles = new Array();
+        var reasons = new Array();
+        var missiles_series = new Array();
+        for(var k in barDataAllSeriesForMR){
+            missiles.push(k);
+        };
+        for(var kk in barDataAllSeriesForMR[missiles[0]]){
+            reasons.push(kk);
+        };
+        function sortMissiles(a,b){
+            return a.localeCompare(b, 'zh-CN');
+        }
+        missiles.sort(sortMissiles);
+        reasons.sort(sortMissiles);
+
+        //for(var i=0, len=missiles.length; i<len; i++){
+        //    var temp_series = new Array();
+        //    for(var j=0, len1=reasons.length; j<len1; j++){
+        //        temp_series.push(barDataAllSeriesForMR[missiles[i]][reasons[j]]);
+        //    };
+        //    missiles_series.push(temp_series);
+        //};
+        console.log(barDataAllSeriesForMR);
+        console.log(missiles);
+        console.log(reasons);
+        //console.log(missiles_series);
+
+
+
+
+        console.log("折线图1（2002-2018每种失误原因变化趋势）_____________________________________");
+        //0: years
+        //1-...: 1*[e], 1*[zh], ...
+        //
+        //0-...: 1*[e+zh], ...
+        var lineData1TempJson = {{line_two_series|safe}};
+        var lineData1e = new Array();
+        var lineData1zh = new Array();
+        var lineData1TempJsonSum = new Array();
+        for(var i=1; i<lineData1TempJson.length; i=i+2){
+            var tempArray = new Array();
+            for(var j=0; j<lineData1TempJson[i].length; j++){
+              tempArray.push(
+                  lineData1TempJson[i][j] + lineData1TempJson[i+1][j]
+              );
+            };
+            lineData1e.push(lineData1TempJson[i])
+            lineData1zh.push(lineData1TempJson[i+1])
+            lineData1TempJsonSum.push(tempArray)
+        };
+        console.log(lineData1TempJson);
+        console.log(lineData1TempJson.length);
+        console.log(lineData1TempJsonSum);
+        console.log(lineData1TempJsonSum.length);
+
+        console.log("饼图1_____________________________________");
+        var pieKey1 = {{pie_Data_planes|safe}};
+        var pieData1 = new Array();
+        {% for i in pie_Data_planes_count%}
+            pieData1.push({{i|safe}});
+            console.log("======");
+            console.log({{i|safe}});
+        {%endfor%}
+        console.log(pieKey1);
+        console.log(pieData1);
+
+        console.log("横向柱形图2_____________________________________");
+        var barName = {{bar_Name_missile|safe}};
+        var barData2 = {{bar_Data_target_hit|safe}};
+        var barData2Hans = {{bar_Data_hans|safe}};
+        console.log(barName);
+        console.log(barData2);
+        console.log(barData2Hans);
+
+        console.log("折线图2(俄制 空地 命中率趋势 两个列表=两条线)_____________________________________");
+        var lineData2 = new Array();
+        {% for i in line_two_compare.values%}
+            console.log("======");
+            lineData2.push({{i|safe}});
+            console.log({{i|safe}});
+        {%endfor%}
+        console.log(lineData2);
+
+
+        console.log("饼图2_____________________________________");
+        var pieKey2 = {{pie_Data_missiles|safe}};
+        var pieData2 = {{pie_Data_missiles_count|safe}}
+        //var pieData2 = new Array();
+        //{% for i in pie_Data_missiles_count%}
+        //    console.log("======");
+        //    console.log({{i|safe}});
+        //    pieData2.push({{i|safe}});
+        //{%endfor%}
+        console.log(pieKey2);
+        console.log(pieData2);
+
+
+
+        console.log("城市~~~~~~~~~~~~~~~~~~~~~~~~~~");
+
+        console.log("一些变量常量~~~~~~~~~~~~~~~~~~~~~~~~~~");
+    </script>
+</head>
+
+<body>
+  <header>
+<!--      <div class="text-white" style="position:fixed;top:0;bottom:0;right:0;left:0;margin:auto;"><img width="80" height="80" src="{% static 'raw/pictures/厂徽.png'%}"></div>-->
+    <h1 style="position:fixed;top:0;bottom:0;right:0;left:0;margin:auto;">外场靶试数据可视化平台</h1>
+    <div class="showTime" style="position:fixed;">
+<!--      当前时间：<span></span>-->
+        <a href="{%url 'url_projects'%}" onclick="queryBy();" target="_self" style="background-color:rgba(0,0,0,0);border:none;color:#fff;text-decoration:none;">项目看板&nbsp;&nbsp;&nbsp;&nbsp;</a>
+        <a href="{%url 'url_projects'%}" target="_self" style="background-color:rgba(0,0,0,0);border:none;color:#fff;text-decoration:none;">查看报告</a>
+      <select class="bg-dark" style="background-color:rgba(0,0,0,0);border:none;color:#fff;">
+        <option>
+        <a href="{%static '/reports/历年靶试数据集.docx'%}" target="_top" style="background-color:rgba(0,0,0,0);border:none;color:#fff;text-decoration:none;">下载报告</a>
+        </option>
+        <option>
+        <a href="http://192.168.12.39:8000/admin/" target="_blank" style="background-color:rgba(0,0,0,0);border:none;color:#fff;text-decoration:none;">后台</a>
+        </option>
+      </select>
+    </div>
+
+  </header>
+  <section class="mainbox">
+    <div class="column">
+      <div class="panel line">
+        <h2>
+          失利任务数量变化趋势
+        <select id="select-line1" style="background-color:rgba(0,0,0,0);border:none;color:#fff;">
+            <option style="background-color:#06164A;border:none;color:#fff;">选择失利原因</option>
+        {% for r in years.1%}
+            <option style="background-color:#06164A;box-shadow:none;border:none;color:#fff;">{{r}}</option>
+        {%endfor%}
+        </select>
+        </h2>
+        <div class="chart"></div>
+        <div class="panel-footer"></div>
+      </div>
+      <div class="panel bar">
+        <h2>
+          各型号弹药各失利原因数量统计
+        </h2>
+        <div class="chart"></div>
+        <div class="panel-footer"></div>
+      </div>
+      <div class="panel line1">
+        <h2>2002-2018年俄制、空地弹药命中率趋势</h2>
+        <div class="chart"></div>
+        <div class="panel-footer"></div>
+      </div>
+    </div>
+    <div class="column">
+      <div class="no">
+        <div class="no-hd">
+          <ul>
+            <li>{{sums.0|safe}}</li>
+            <li>{{sums.1|safe}}</li>
+            <li>{{sums.2|safe}}</li>
+          </ul>
+        </div>
+        <div class="no-bd">
+          <ul>
+            <li>记录在册（枚）</li>
+            <li>命中弹药（枚）</li>
+            <li>命中率</li>
+          </ul>
+        </div>
+      </div>
+      <div class="map">
+        <div class="chart"></div>
+        <div class="map1"></div>
+        <div class="map2"></div>
+        <div class="map3"></div>
+      </div>
+    </div>
+    <div class="column">
+      <div class="panel bar1">
+        <h2>各型号弹药的命中率</h2>
+        <div class="chart"></div>
+        <div class="panel-footer"></div>
+      </div>
+      <div class="panel pie1">
+        <h2>历年任务中各载机型号统计</h2>
+        <div class="chart"></div>
+        <div class="panel-footer"></div>
+      </div>
+      <div class="panel pie2">
+        <h2>历年任务中各弹药型号统计</h2>
+        <div class="chart"></div>
+        <div class="panel-footer"></div>
+      </div>
+
+
+<!--      模态框-->
+<!--      <div class="modal" id="proModal" >-->
+<!--        <div><h1>zvsadvx</h1></div>-->
+<!--      </div>-->
+
+    </div>
+  </section>
+
+
+
+<!--bootstrap css    -->
+<!--     <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min-self.css'%}" />-->
+<!--jquery依赖-->
+    <script  src="{% static 'bootstrap/js/jquery-3.5.1.min.js'%}" ></script>
+<!--bootstrap的js插件-->
+<!--    <script src="{% static 'bootstrap/js/bootstrap.min.js'%}" ></script>-->
+<!--    <script src="{% static 'bootstrap/js/bootstrap.bundle.min.js'%}" ></script>-->
+
+  <script src="{% static 'framework/js/flexible.js'%}"></script>
+  <script src="{% static 'framework/js/echarts.min.js'%}"></script>
+  <script src="{% static 'framework/js/index.js'%}"></script>
+  <script src="{% static 'framework/js/china.js'%}"></script>
+  <script src="{% static 'framework/js/myMap.js'%}"></script>
+
+  <script>
+  </script>
+
+
+</body>
+
+</html>

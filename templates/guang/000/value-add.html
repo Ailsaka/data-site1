@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html class="x-admin-sm">
+    
+    <head>
+        <meta charset="UTF-8">
+        <title>默认页面</title>
+        <meta name="renderer" content="webkit">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
+        {%load static%}
+        <link rel="stylesheet" href="{% static 'x-admin/css/font.css'%}">
+        <link rel="stylesheet" href="{% static 'x-admin/css/xadmin.css'%}">
+        <script type="text/javascript" src="{% static 'x-admin/lib/layui/layui.js'%}" charset="utf-8"></script>
+        <script type="text/javascript" src="{% static 'x-admin/js/xadmin.js'%}"></script>
+        <!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+        <!--[if lt IE 9]>
+            <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+            <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+    </head>
+    <body>
+        <div class="layui-fluid">
+
+            <div class="layui-row">
+                <form class="layui-form" >
+                    <!-- action=" url 'guang:submit' 'value' 'add'" enctype="multipart/form-data"  method="post" -->
+
+                    {% csrf_token %}
+                    <div class="layui-form-item">
+                        <input type="hidden" id="L_table_id" name="ids" value="{{ids}}"class="layui-input" ></div>
+
+
+                    <div class="layui-form-item">
+                        <label for="L_de_name" class="layui-form-label">
+                            <span class="x-red">*</span>选择部门</label>
+                                <div class="layui-input-inline layui-show-xs-block">
+                                    <select name="department_choice" id="controller">
+                                        <option value="" style="display: none;" disabled selected>请选择部门</option>
+                                        {%for de in departments%}
+                                        <option>{{de.name}}</option>
+                                        {%endfor%}</select></div>
+                        <div class="layui-form-mid layui-word-aux">
+                            <span class="x-red"></span></div></div>
+
+                    <div class="layui-form-item">
+                        <label for="L_de_name" class="layui-form-label">
+                            <span class="x-red"></span>新增部门</label>
+                                <div class="layui-input-inline layui-show-xs-block">
+                            <input type="text" id="L_de_name" name="department_input" class="layui-input" ></div>
+                        <div class="layui-form-mid layui-word-aux">
+                            <span class="x-red"></span></div></div>
+
+                    {% for col in cols%}
+                    <div class="layui-form-item">
+                        <label for="L_col_value" class="layui-form-label">
+                            <span class="x-red"></span>{{col}}</label>
+                        <div class="layui-input-inline">
+                            <input type="text" id="L_col_value" name="value_{{col}}"lay-verify="{%if col.required%}required{%endif%} {{text}}" autocomplete="off" class="layui-input"></div>
+                        <div class="layui-form-mid layui-word-aux">
+                            <span class="x-red"></span></div>
+                    </div>
+                    {%endfor%}
+
+                    <div class="layui-form-item">
+                        <label for="L_col_value" class="layui-form-label"></label>
+                        <button class="layui-btn" lay-filter="add" lay-submit="">增加</button></div>
+                </form>
+        </div>
+        </div>
+        <script>
+            layui.use(['form', 'layer','jquery'],
+            function() {
+               $ = layui.jquery;
+               var form = layui.form,
+               layer = layui.layer;
+
+            //    //自定义验证规则
+            //    form.verify({
+            //        nikename: function(value) {
+            //            if (value.length < 5) {
+            //                return '昵称至少得5个字符啊';
+            //            }
+            //        },
+            //        pass: [/(.+){6,12}$/, '密码必须6到12位'],
+            //        repass: function(value) {
+            //            if ($('#L_pass').val() != $('#L_repass').val()) {
+            //                return '两次密码不一致';
+            //            }
+            //        }
+            //    });
+
+                //监听提交
+               form.on('submit(add)',
+               function(data) {
+                   console.log(data.field);
+                   //发异步，把数据提交给后台
+                   $.ajax({
+                       type: "POST",
+                       url: "{% url 'guang:values' 'add'%}",
+                       data:data.field,
+                       dataType: "json",
+                       success: function(data){
+                           console.log(data)
+                       }
+                   });
+                   layer.alert("增加成功(数值已存在则不会重复添加！)", {
+                       icon: 6
+                   },
+                   function() {
+                       //关闭当前frame
+                       xadmin.close();
+
+                       // 可以对父窗口进行刷新 
+                       xadmin.father_reload();
+                   });
+                   return false;
+               });
+
+            });
+        </script>
+        <script>var _hmt = _hmt || []; (function() {
+                var hm = document.createElement("script");
+                hm.src = "https://hm.baidu.com/hm.js?b393d153aeb26b46e9431fabaf0f6190";
+                var s = document.getElementsByTagName("script")[0];
+                s.parentNode.insertBefore(hm, s);
+            })();
+        </script>
+    <!-- JS部分 -->
+<!--     <script type="text/javascript">
+
+        // 新增记录
+        function new_record() {
+            var form = document.getElementById('new_record');
+            var week_number_temp = document.getElementById("week_number").value
+            // 判断单元格是否为正整数（页面已经设定input-type为number）
+            function isPositiveNum(obj){//是否为正整数
+                var re = /^[0-9]+$/ ;
+                return re.test(obj)
+            };
+            // 判断周编号week_number输入框的值是否为正整数
+            if (isPositiveNum(week_number_temp) == false){
+                alert("提示：周编号不能为空，请输入正数字~");
+                return false;
+            } else {
+                form.submit();
+                $("#addRecord").on("hide.bs.modal",function(){
+                    $('#new_record')[0].reset(); //重置表单，否则新弹窗依然显示上次数据
+                    // clearForm('edit_form');//清空表单方法
+                })
+                $('#addRecord').modal('hide');
+                var messageOpts = {
+                        "closeButton" : true,//是否显示关闭按钮
+                        "debug" : false,//是否使用debug模式
+                        "positionClass" : "toast-top-center",//弹出窗的位置
+                        "timeOut" : "1500",//展现时间
+                    };
+                    toastr.options = messageOpts;
+                    // toastr.info('content','title');
+                    toastr.info('提交成功，请刷新页面');
+            };
+        };
+
+        // 删除记录 del_record()
+        // $('#delRecord').modal('hide');
+        function Value_id(ID){
+            $("#id_del").val(ID);
+            };
+        function del_record() {
+            var form = document.getElementById('del_record');
+            form.submit();
+            $('#delRecord').modal('hide');
+        };
+
+        // 单击修改时，清空数据
+        $("#editRecord").on("hidden.bs.modal", function() {  
+            $(this).removeData("bs.modal");
+            $(this).find(".modal-content").children().remove();
+        }); 
+        // 提交修改数据
+        // 单击地址页的“修改”时把指定值传递到模态框页面但不在form里面，所以改在单击更新按钮(edit_record())时并在form.submit()之前修改值
+        function Value_url(ID){
+            $("#url_temp").val(ID);
+            };
+        function edit_record() {
+            var url_temp=document.getElementById("url_temp").value;
+            document.getElementById("url_address").value = url_temp
+            var form = document.getElementById('edit_record');
+            form.submit();
+            $('#editRecord').modal('hide');
+        };
+
+        //日期选择
+        $(function () {
+                $('#week_year').datepicker({
+                // format: "yyyy-mm-dd",
+                format: "yyyy",
+                weekStart: 1,
+                autoclose:true,  //点选之后自动隐藏
+                minDate: "2010-04-06", //设置最早日期
+                language: "zh-CN",
+                orientation:'bottom',
+                //只选择年
+                startView: 'years',
+                maxViewMode:'years',
+                minViewMode:'years',
+                });
+            });
+
+        //工单表格编辑时可粘贴
+        //Paste Excel data into html table ** html表格实现Excel表格多单元格粘贴 **
+        $.fn.pasteFromExcel = function() {     //make it a jquery function
+            $(this).bind('paste', function(e) {
+                e.preventDefault(); //消除默认粘贴
+
+                //获取粘贴板数据
+                var clipboardData = window.clipboardData || e.originalEvent.clipboardData, // IE || chrome
+                        data = clipboardData.getData('Text'),
+                        //判断表格数据是使用\n还是\r分行，解析成行数组
+                    rowArr = (data.indexOf(String.fromCharCode(10)) > -1) ?
+                            data.split(String.fromCharCode(10)) :
+                            data.split(String.fromCharCode(13)),
+                        //根据\t解析单元格
+                        cellArr = rowArr.filter(function(item) { //兼容Excel行末\n，防止粘贴出多余空行
+                        return (item !== "")
+                    }).map(function(item) {
+                        return item. split(String.fromCharCode(9));
+                    });
+
+                //输出至网页表格
+                var tab = $(e.target).parents('table')[0],  //表格
+                        td = $(e.target).parents('td'),    //当前单元格
+                        startRow = td.parents('tr')[0].rowIndex, //当前单元格行数
+                        startCell = td[0].cellIndex, //当前单元格列数
+                        rows = tab.rows.length;  //总行数
+                for (var i = 0; i < cellArr.length && startRow + i < rows; i++) {
+                    var cells = tab.rows[startRow + i].cells.length;  //该行总列数
+
+                    for(var j = 0; j < cellArr[i].length && startCell + j < cells; j++) {
+                        var cell = tab.rows[startRow + i].cells[startCell + j];
+                        $(cell).find(':text').val(cellArr[i][j]);
+                    }
+                }
+            })
+        }
+        $('#table').pasteFromExcel();
+
+    </script> -->
+    </body>
+
+</html>

@@ -1,0 +1,163 @@
+{%extends 'base.html'%}
+{%block title%} 测试页 {%endblock%}
+
+{%load static%}
+<!--bootstrap core jquery    -->
+     <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css'%}" />
+    <script  src="{% static 'bootstrap/js/jquery-3.5.1.js'%}" ></script>
+    <script  src="{% static 'bootstrap/js/jquery-3.5.1.min.js'%}" ></script>
+<!--bootstrap的js插件-->
+<!--    <script src="{% static 'bootstrap/popper/popper.js'%}" type="module"></script>-->
+    <script src="{% static 'bootstrap/js/bootstrap.min.js'%}" ></script>
+    <script src="{% static 'bootstrap/js/bootstrap.bundle.min.js'%}" ></script>
+
+
+  <!-- Core plugin JavaScript-->
+  <script src="{%static 'vendor/jquery-easing/jquery.easing.min.js'%}"></script>
+
+  <!-- Custom scripts for all pages-->
+  <script src="{%static 'js/sb-admin-2.min.js'%}"></script>
+
+  <!-- Page level plugins -->
+  <script src="{%static 'vendor/chart.js/Chart.min.js'%}"></script>
+
+  <!-- Page level custom scripts -->
+  <script src="{%static 'js/demo/chart-area-demo.js'%}"></script>
+  <script src="{%static 'js/demo/chart-pie-demo.js'%}"></script>
+
+
+{%block body%}
+<h3>0.常量</h3>
+<div class="row" style="width:600;">
+    <div class="col">数据库总数&nbsp;{{db_info.sum.总数}}条</div>
+    <div class="col">结构化描述&nbsp;{{db_info.sum.描述}}条</div>
+    <div class="col">表格式&nbsp;{{db_info.sum.表}}条</div>
+</div>
+<div class="row" style="width:600;">
+    <div class="col">命中&nbsp;{{db_info.hit.命中}}</div>
+    <div class="col">失利&nbsp;{{db_info.hit.失利}}</div>
+    <div class="col">无此项&nbsp;{{db_info.hit.无此项}}</div>
+</div>
+<div class="row" style="width:600;">
+    <div class="col">本次添加&nbsp;{{db_info.db_add}}</div>
+    <div class="col">本次更新&nbsp;{{db_info.db_update}}</div>
+    <div class="col">重复数&nbsp;{{db_info.repeat}}</div>
+</div>
+
+
+<p>——————</p>
+<h3>1.上传下载</h3>
+<form enctype="multipart/form-data" method="POST" action="{% url 'data:upload'%}">
+    {% csrf_token %}
+    <input type="file" name="file">
+    <button onclick="submit" value="upload" class="btn-primary">上传文件</button>
+</form>
+<a href="{% url 'data:down'%}">下载文件</a><br>
+<a href="dataClient://">打开本机客户端</a>
+
+<br>
+<p>——————</p>
+<h3>2.添加</h3>
+<a href="{% url 'data:test_add_from_csv'%}">添加数据到数据库</a>
+
+<p>——————</p>
+<h3>3.查询</h3>
+<input type="text" placeholder="输入弹号" id="mno">
+<button onclick="queryByMno();">确定</button>
+<input type="text" placeholder="输入弹型" id="missile">
+<button onclick="queryByMissile();">确定</button>
+<p id="queryResult"></p>
+<p id="queryResultM"></p>
+<p>
+    1<br>2
+</p>
+
+<p>——————</p>
+<h3>4.链接跳转</h3>
+<a href="192.168.12.39:8000/admin">admin</a>
+<a href="http://192.168.12.39:8000/admin/">admin</a>
+
+<p>——————</p>
+<h3>5.下拉菜单</h3>
+
+   <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+          <i class="fas fa-fw fa-cog"></i>
+          <span>Components</span>
+        </a>
+        <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+          <div class="bg-white py-2 collapse-inner rounded">
+            <h6 class="collapse-header">Custom Components:</h6>
+            <a class="collapse-item" href="buttons.html">Buttons</a>
+            <a class="collapse-item" href="cards.html">Cards</a>
+          </div>
+        </div>
+      </li>
+    </ul>
+
+<script>
+    function queryByMno(){
+        console.log("按弹号查询");
+        $.ajax({
+            url:'{% url 'data:test'%}',
+            type:'POST',
+            data:{
+                'mno':$("#mno").val(),
+            },
+            dataType:'json',
+            success:function(get){
+                console.log(get.q_mno);
+                $('#queryResult').text(get.q_mno);
+            },
+        });
+    };
+    function queryByMissile(){
+        console.log("按弹型查询");
+        $.ajax({
+            url:'{% url 'data:test'%}',
+            type:'POST',
+            data:{
+                'missile':$("#missile").val(),
+            },
+            dataType:'json',
+            success:function(get){
+                console.log(get.q_missile);
+                $('#queryResultM').text(get.q_missile);
+            },
+        });
+    };
+</script>
+
+{%endblock%}
+
+
+
+<!--注释掉的代码
+<button onclick="javascript:window.document.href='{% url 'data:test_add_from_csv'%}';" class="btn-secondary">添加到数据库</button>
+
+
+admin 寻找模板的路径有3个地方
+创建对应名称的html页面即可
+优先级如下：
+本目录
+项目目录/templates
+django自带目录
+python -c "import django; print(django.__path__)"
+
+
+
+
+view传过来的值send_to_page必须是字典
+
+过滤器
+显示变量的前x个词（还有格式化date/datetime 大小写  等等）
+可选参数： first   upper  lower  addslashes  date length default truncatewords:"2" truncatechars:2
+filesizeformat date
+safe对收到的“...”进行h5标签解释
+<h1> {{ view_dict.db_name| default:"收到了空值或者无效值的时候就显示这个默认值" }}</h1>
+<h1>{{ datetime|date:"Y-m-d-h-m-s" }}</h1><p> </p>
+<h1>{{ datetime|date:"Y-m-d" }}</h1><p> </p>
+<h1>{{ datetime|date:"h-m-s" }}</h1><p> </p>
+
+   -->

@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>可视化大屏</title>
+
+    {%load static%}
+	<link rel="stylesheet" href="icon/iconfont.css{% static 'charts/css/icon/iconfont.css'%}">
+	<script src="{% static 'bootstrap/js/jquery-3.5.1.js'%}"></script>
+	<script src="{% static 'echarts/echarts.min.js'%}"></script>
+	
+
+</head>
+<body>
+<div class="container-header">
+    <ul class="nowTime">
+        <li></li>
+        <li></li>
+    </ul>
+    <div class="location">
+        <i class="icon iconfont icon-buoumaotubiao23"></i>
+        <span class="areaName"></span>
+    </div>
+    <h3>数据平台</h3>
+</div>
+<div class="container-content">
+    <div class="top">
+		<div class="count-base" >
+			<div class="com-count-title">资源总量构成</div>
+			<div class="com-screen-content">
+				
+				<div id="main1" style="width:100%;height:300px;"></div>
+			</div>
+			<span class="left-top"></span>
+			<span class="right-top"></span>
+			<span class="left-bottom"></span>
+			<span class="right-bottom"></span>
+		</div>
+		<div class="count-resource q1">
+			<div class="com-count-title">资源总量统计</div>
+			<div class="com-screen-content2">
+				<ul class="use-data">
+					<li>
+						<p class="data-count">15681 </p>
+						<span class="data-name">发布表单</span>
+					</li>
+					<li>
+						<p class="data-count"> 1731</p>
+						<span class="data-name">数据总量</span>
+					</li>
+					<li>
+						<p class="data-count">11753</p>
+						<span class="data-name">本周更新</span>
+					</li>
+				</ul>
+				<div class="com-screen-content">
+				 <div id="main2" style="margin-top:10px;width:100%;height:240px;"></div>
+				</div>
+				<span class="left-top"></span>
+				<span class="right-top"></span>
+				<span class="left-bottom"></span>
+				<span class="right-bottom"></span>
+			</div>
+		</div>
+		<div class="count-resource q2">
+			<div class="com-count-title">统计</div>
+			
+				
+			<div class="com-screen-content">
+				<ul class="data-label">
+					<li class="active" data-type="1">表单类别1</li>
+					<li data-type="2">表单类别2</li>
+					<li data-type="3">表单类别3</li>               
+				</ul>
+				<ul class="use-data">
+
+				</ul>
+			 <div id="main3" style="margin-top:10px;width:100%;height:240px;"></div>
+			</div>
+			<span class="left-top"></span>
+			<span class="right-top"></span>
+			<span class="left-bottom"></span>
+			<span class="right-bottom"></span>
+		</div>
+    </div>
+	
+	<div class="mid">
+		<div class="count-share w1" >
+			<div class="com-count-title">数据更新时间</div>
+			<div class="com-screen-content">
+				    <div class="topRec_List">
+						<dl>
+							<dd>资源名称</dd>
+							<dd>调用方</dd>
+							<dd>调用时间</dd>
+						</dl>
+						<div class="maquee">
+							<ul>
+							
+						
+								<li>
+									<div>审计局主要职责</div>
+									<div>审计局</div>
+									<div>08:20:26 </div>
+								</li> 
+							</ul>
+						</div>
+					</div>
+			</div>
+			<span class="left-top"></span>
+			<span class="right-top"></span>
+			<span class="left-bottom"></span>
+			<span class="right-bottom"></span>
+		</div>
+		<div class="count-share w2" >
+			<div class="com-count-title">数据共享次数</div>
+			<div class="com-screen-content">
+			 <div id="main5" style="width:100%;height:300px;"></div>
+			</div>
+			<span class="left-top"></span>
+			<span class="right-top"></span>
+			<span class="left-bottom"></span>
+			<span class="right-bottom"></span>
+		</div>
+	</div>
+	
+	<div class="bottom">
+		<div class="count-topic e1" >
+			<div class="com-count-title">主题库统计</div>
+			<div class="com-screen-content">
+			<div id="main6" style="width:100%;height:300px;"></div>
+			</div>
+			<span class="left-top"></span>
+			<span class="right-top"></span>
+			<span class="left-bottom"></span>
+			<span class="right-bottom"></span>
+		</div>
+		<div class="count-topic e2" >
+			<div class="com-count-title">主题库共享次数</div>
+			<div class="com-screen-content">
+			 <div id="main7" style="width:100%;height:300px;"></div>
+			</div>
+			<span class="left-top"></span>
+			<span class="right-top"></span>
+			<span class="left-bottom"></span>
+			<span class="right-bottom"></span>
+		</div>
+	</div>
+	<div class="clearfix"></div>
+</div>
+
+<script type="text/javascript"> 
+//根据不同的分辨率调用不同的css和js
+	if(window.screen.width>=1600){
+		document.write("<link href='{%static 'charts/css/test-1920.css'%}' rel='stylesheet' type='text/css'>");  
+		
+		document.writeln("<script type=\"text/javascript\" src=\"{%static 'charts/js/test-1920.js'%}\"><\/script>");
+	}
+	else if(window.screen.width<1600&&window.screen.width>=1280){
+		document.write("<link href='{%static 'charts/css/test-1280.css'%}' rel='stylesheet' type='text/css'>");  
+		
+		document.writeln("<script type=\"text/javascript\" src=\"{%static 'charts/js/test-1280.js'%}\"><\/script>");
+	}else{
+	document.write("<link href='{%static 'charts/css/test-1024.css'%}' rel='stylesheet' type='text/css'>");  
+		
+		document.writeln("<script type=\"text/javascript\" src=\"{%static 'charts/js/test-1024.js'%}\"><\/script>");
+	}
+</script>
+
+<script type="text/javascript"> 
+	  function autoScroll(obj){  
+			$(obj).find("ul").animate({  
+				marginTop : "-39px"  
+			},500,function(){  
+				$(this).css({marginTop : "0px"}).find("li:first").appendTo(this);  
+			})  
+		}  
+		$(function(){  
+			setInterval('autoScroll(".maquee")',2000);
+		}) 
+</script> 
+</body>
+</html>
